@@ -1,43 +1,46 @@
-import logo from './logo.svg';
 import './App.css';
-import {useState} from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import MainScreen from "./components/MainScreen";
-import SignIn from "./components/authentication/SignIn";
-import SignUp from "./components/authentication/SignUp";
+import React, {useState} from "react";
+import {BrowserRouter as Router, Navigate, Route, Routes} from "react-router-dom";
+import MainScreen from "./MainScreen";
+import SignIn from "./authentication/SignIn";
+import SignUp from "./authentication/SignUp";
 
 function App() {
-  const [userLogin, setUserLogin] = useState({})
+    const [userLogin, setUserLogin] = useState({})
 
-  return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainScreen/>}/>
-          <Route path="/sign_in" element={<SignIn/>}/>
-          <Route path="/sign_up" element={<SignUp/>}/>
-        </Routes>
+    return (
+        <Router>
+            <Routes>
+                <Route path="/app/*" element={userLogin ? <MainScreen/> : <Navigate to="/sign_in"/>}/>
+                <Route exact path="/sign_in" element={!userLogin ? <SignIn/> : <Navigate to="/app"/>}/>
+                <Route exact path="/sign_up" element={!userLogin ? <SignUp/> : <Navigate to="/app"/>}/>
+                <Route
+                    path="*"
+                    element={userLogin ? <Navigate to="/app"/> : <Navigate to="/sign_in"/>}
+                />
+            </Routes>
+        </Router>
+    );
 
-      </BrowserRouter>
-  );
 
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //   </div>
-  // );
+    // return (
+    //   <div className="App">
+    //     <header className="App-header">
+    //       <img src={logo} className="App-logo" alt="logo" />
+    //       <p>
+    //         Edit <code>src/App.js</code> and save to reload.
+    //       </p>
+    //       <a
+    //         className="App-link"
+    //         href="https://reactjs.org"
+    //         target="_blank"
+    //         rel="noopener noreferrer"
+    //       >
+    //         Learn React
+    //       </a>
+    //     </header>
+    //   </div>
+    // );
 }
 
 export default App;
